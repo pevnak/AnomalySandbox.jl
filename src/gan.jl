@@ -71,6 +71,8 @@ end
 discriminator_loss(m::GAN, x::AbstractArray) =
     discriminator_loss(m, x, rand(m.prior, size(x,2)))
 
+StatsBase.predict(m::GAN, x) = vec(1 .- mean(m.discriminator, x))
+
 function Base.show(io::IO, m::AbstractGAN)
     p = repr(m.prior)
     p = sizeof(p)>70 ? "($(p[1:70-3])...)" : p
