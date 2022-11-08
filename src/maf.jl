@@ -1,3 +1,4 @@
+# taken from https://github.com/janfrancu/ContinuousFlows.jl
 function inv_flow(c::Flux.Chain, x)
     inv_flow_chain(reverse(c.layers), x)
 end
