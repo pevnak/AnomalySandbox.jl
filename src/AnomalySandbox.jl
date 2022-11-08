@@ -15,7 +15,7 @@ const TuMvNormal = Union{DistributionsAD.TuringDenseMvNormal,
                          DistributionsAD.TuringDiagMvNormal,
                          DistributionsAD.TuringScalMvNormal}
 
-export VAE, GAN
+export VAE, GAN, MAF
 export elbo, generator_loss, discriminator_loss
 export predict, train!, softplus_safe
 
@@ -33,5 +33,6 @@ include("utils.jl")
 include("vae.jl")
 include("gan.jl")
 include("gmm.jl")
+include("maf.jl")
 
 end
