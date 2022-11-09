@@ -53,9 +53,6 @@ function two_bananas()
 end
 
 function get_2D_grid(xlims, ylims, step)
-	xlims = [-4,4]
-	ylims = [-3,3]
-	st = 0.1
 	xsp = xlims[1]:step:xlims[2]
 	ysp = ylims[1]:step:ylims[2]
 	Xgr = []
