@@ -51,15 +51,3 @@ function two_bananas()
 	anomalous = banana([1,0.4], 2, 500, pi, 2*pi, 0.2)
 	return normal, anomalous
 end
-
-function get_2D_grid(xlims, ylims, step)
-	xsp = xlims[1]:step:xlims[2]
-	ysp = ylims[1]:step:ylims[2]
-	Xgr = []
-	for x in xsp
-		for y in ysp
-			push!(Xgr, [x;y])
-		end
-	end
-	hcat(Xgr...)
-end

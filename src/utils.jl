@@ -123,3 +123,15 @@ function _kld_gaussian1(μ1::AbstractArray, σ1::AbstractArray, μ2::AbstractArr
     m3 = sum(log.(σ2 ./ σ1), dims=1)
     (m1 .+ m2 .+ m3 .- k) ./ 2
 end
+
+function train_test_split(xa, xn)
+    xn = Float32.(xn)
+    xa = Float32.(xa)
+    n = size(xn,2) ÷ 2
+    na = size(xa, 2)
+    ninds = randperm(2*n)
+    xtrn = xn[:,ninds[1:n]]
+    xtst = hcat(xn[:,ninds[n+1:end]], xa)
+    ytst = vcat(zeros(Int,n), ones(Int,na))
+    xtrn, (xtst, ytst)
+end
