@@ -6,6 +6,7 @@ using StatsBase
 using GaussianMixtures
 using ConditionalDists
 using Distributions
+using LinearAlgebra
 using Distances
 using DistributionsAD
 using StatsBase: predict
@@ -36,7 +37,8 @@ include("gan.jl")
 include("gmm.jl")
 include("maf.jl")
 include("parzen.jl")
-include("knn.jl")
+include("isolation_forest.jl")
+include("pca.jl")
 
 export train_test_split
 end

@@ -1,0 +1,12 @@
+[deps]
+AnomalySandbox = "1d05c0bd-cb7b-4d83-ac21-ca7f60ac5bb6"
+ConditionalDists = "c648c4dd-c1e0-49a6-84b9-144ae7fd2468"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+LIBSVM = "b1bec4e5-fd48-53fe-b0cb-9723c09d164b"
+MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
+OutlierDetection = "262411bb-c475-4342-ba9e-03b8c0183ca6"
+OutlierDetectionNeighbors = "51249a0a-cb36-4849-8e04-30c7f8d311bb"
+OutlierDetectionPython = "2449c660-d36c-460e-a68b-92ab3c865b3e"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"

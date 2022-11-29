@@ -49,5 +49,28 @@ function two_bananas()
 	# generate the bananas
 	normal = banana([-1,-0.4], 2, 500, 0, pi, 0.2)
 	anomalous = banana([1,0.4], 2, 500, pi, 2*pi, 0.2)
-	return normal, anomalous
+	grid = (-4:0.01:4, -3:0.01:3)
+	return(normal, anomalous, grid)
 end
+
+"""
+lofdata(; n = 500)
+
+a dataset with two gaussians with a very different variance, 
+used as a motivation for the LOF method
+"""
+function lofdata(; n = 500)
+	xn₁, xa₁ = _lofnormal(n)
+	xn₂, xa₂ = _lofnormal(n; μ = 5, σ² = 5)
+	grid = (-4.5:0.02:6.2, -4.5:0.02:6.2)
+	return(hcat(xn₁, xn₂), hcat(xa₁, xa₂), grid)
+end
+
+function _lofnormal(n; μ = 0, σ² = 1)
+	xn = μ .+ randn(Float32, 2, n) ./ σ²
+	θ = 2π .* rand(round(Int, 0.05*n))
+	xa = 3.7 .* vcat(sin.(θ)', cos.(θ)') .+ randn(2,length(θ)) ./ 5
+	xa = Float32.(μ .+ xa ./ σ²)
+	(xn, xa)
+end
+

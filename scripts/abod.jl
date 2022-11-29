@@ -1,5 +1,7 @@
 using AnomalySandbox
-using AnomalySandbox: two_bananas, lofdata, Parzen
+using AnomalySandbox: two_bananas, lofdata
+using OutlierDetection 
+using OutlierDetectionNeighbors: ABODDetector
 using StatsBase
 using Flux
 using GLMakie
@@ -10,21 +12,22 @@ dataset1 = train_test_split(lofdata()...)
 dataset2 = train_test_split(two_bananas()...)
 
 plot_no = 1
-for σ in Float32.( 2.0 .^ collect(-4:0.5:3))
+for k in 2 .^ (2:6)
     fig = Figure(resolution = (1800, 700));
     ga = fig[1, 1] = GridLayout()
 
 	for (i, dataset) in enumerate([dataset1, dataset2])
 		xtrn = dataset[1]
-        model = Parzen(xtrn, σ) # for more options see the documentations of GaussianMixtures.jl
 	    ax = Axis(ga[1, i])
-	    heatcontplot!(ax, x -> predict(model, x), dataset);
+	    d = ABODDetector(;k)
+	    model, _ = OutlierDetection.fit(d, xtrn; verbosity = 0)
+	    heatcontplot!(ax, x -> OutlierDetection.transform(d, model, x), dataset);
 	end
-	label = "σ = $(σ)"
+	label = "k = $(k)"
 	Label(ga[1, 1:2, Top()], label, valign = :bottom,
 	    font = "TeX Gyre Heros Bold", textsize = 26,
 	    padding = (0, 0, 5, 0))
 
-    save(sdir("parzen_$(plot_no).png"), fig)
+    save(sdir("abod_$(plot_no).png"), fig)
     plot_no += 1
 end

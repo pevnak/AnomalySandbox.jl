@@ -1,24 +1,33 @@
 using AnomalySandbox
-using AnomalySandbox: two_bananas, Parzen
-using ConditionalDists
-using Distributions
+using AnomalySandbox: two_bananas, lofdata
+using OutlierDetection 
+using OutlierDetectionNeighbors: KNNDetector
 using StatsBase
 using Flux
 using GLMakie
 include(joinpath(dirname(pathof(AnomalySandbox)), "plotting.jl"))
 
-xtrn, (xtst, ytst) = train_test_split(two_bananas()...)
-
-# construct the VAE
-zdim = 1
-xdim = size(xtrn, 1)
+sdir(s...) = joinpath("/Users/tomas.pevny/Work/Teaching/Anomaly/animations", s...)
+dataset1 = train_test_split(lofdata()...)
+dataset2 = train_test_split(two_bananas()...)
 
 plot_no = 1
-for σ in Float32.( 2 .^ collect(-5:5))
-    model = KNN(xtrn, k) # for more options see the documentations of GaussianMixtures.jl
+for (k, reduction) in Iterators.product(2 .^ (1:6), [:mean, :median, :maximum])
+    fig = Figure(resolution = (1800, 700));
+    ga = fig[1, 1] = GridLayout()
 
-    fig = heatcontplot(x -> predict(model, x), -4:0.01:4, -3:0.01:3, xtrn, xtst, ytst);
-    fig[0, :] = Label(fig, "sigma = $(σ)")
-    save("../plots/bananas/knn_$(plot_no).png", fig)
+	for (i, dataset) in enumerate([dataset1, dataset2])
+		xtrn = dataset[1]
+	    ax = Axis(ga[1, i])
+	    d = KNNDetector(;k, reduction)
+	    model, _ = OutlierDetection.fit(d, xtrn; verbosity = 0)
+	    heatcontplot!(ax, x -> OutlierDetection.transform(d, model, x), dataset);
+	end
+	label = "k = $(k) reduction = $(reduction)"
+	Label(ga[1, 1:2, Top()], label, valign = :bottom,
+	    font = "TeX Gyre Heros Bold", textsize = 26,
+	    padding = (0, 0, 5, 0))
+
+    save(sdir("knn_$(plot_no).png"), fig)
     plot_no += 1
 end

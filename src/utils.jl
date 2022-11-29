@@ -124,7 +124,7 @@ function _kld_gaussian1(μ1::AbstractArray, σ1::AbstractArray, μ2::AbstractArr
     (m1 .+ m2 .+ m3 .- k) ./ 2
 end
 
-function train_test_split(xa, xn)
+function train_test_split(xn, xa)
     xn = Float32.(xn)
     xa = Float32.(xa)
     n = size(xn,2) ÷ 2
@@ -135,3 +135,5 @@ function train_test_split(xa, xn)
     ytst = vcat(zeros(Int,n), ones(Int,na))
     xtrn, (xtst, ytst)
 end
+
+train_test_split(xn, xa, grid) = (train_test_split(xn, xa)..., grid)
